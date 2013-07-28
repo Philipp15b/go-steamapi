@@ -71,6 +71,13 @@ func (d DotaPlayerSlot) GetPosition() (p uint) {
 	return
 }
 
+type DotaTeam uint
+
+const (
+	Radiant DotaTeam = iota
+	Dire
+)
+
 // TODO: add methods that read information from bits
 type DotaTowerStatus uint16
 

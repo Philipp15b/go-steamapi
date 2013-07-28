@@ -78,10 +78,10 @@ type Unit struct {
 }
 
 type PickBan struct {
-	IsPick    bool // picked or banned
-	HeroId    uint
-	ByRadiant bool // if radiant or dire chose to pick/ban
-	Order     uint // the sequence in which pick/ban was done (0 - 19)
+	IsPick bool `json:"is_pick"`
+	HeroId uint `json:"hero_id"`
+	Team   DotaTeam
+	Order  uint
 }
 
 // Fetches statistics of a specific Match.
