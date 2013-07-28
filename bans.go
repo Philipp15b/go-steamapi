@@ -11,15 +11,15 @@ type playerBansJson struct {
 }
 
 type PlayerBan struct {
-	Steamid         uint64 `json:"SteamId,string"`
+	SteamId         uint64 `json:"SteamId,string"`
 	CommunityBanned bool
 	VACBanned       bool
 	EconomyBan      string
 }
 
-var getPlayerBans = NewSteamMethod("ISteamUser", "GetPlayerBans", 1)
-
 func GetPlayerBans(ids []uint64, apiKey string) ([]PlayerBan, error) {
+	getPlayerBans := NewSteamMethod("ISteamUser", "GetPlayerBans", 1)
+
 	strIds := make([]string, len(ids))
 	for _, id := range ids {
 		strIds = append(strIds, strconv.FormatUint(id, 10))

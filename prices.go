@@ -31,9 +31,9 @@ func (i *Asset) HasTag(tag string) bool {
 	return false
 }
 
-var getAssetPrices = NewSteamMethod("ISteamEconomy", "GetAssetPrices", 1)
-
 func GetAssetPrices(appid uint64, language, currency, apiKey string) ([]Asset, error) {
+	getAssetPrices := NewSteamMethod("ISteamEconomy", "GetAssetPrices", 1)
+
 	vals := url.Values{}
 	vals.Add("key", apiKey)
 	vals.Add("appid", strconv.FormatUint(appid, 10))
