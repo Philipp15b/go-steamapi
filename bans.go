@@ -6,12 +6,13 @@ import (
 	"strings"
 )
 
-type playerBansJson struct {
+type playerBansJSON struct {
 	Players []PlayerBan
 }
 
+// PlayerBan contains all ban status for community, VAC and economy
 type PlayerBan struct {
-	Steamid         uint64 `json:"SteamId,string"`
+	SteamID         uint64 `json:"SteamId,string"`
 	CommunityBanned bool
 	VACBanned       bool
 	EconomyBan      string
@@ -19,17 +20,18 @@ type PlayerBan struct {
 
 var getPlayerBans = NewSteamMethod("ISteamUser", "GetPlayerBans", 1)
 
-func GetPlayerBans(ids []uint64, apiKey string) ([]PlayerBan, error) {
-	strIds := make([]string, len(ids))
-	for _, id := range ids {
-		strIds = append(strIds, strconv.FormatUint(id, 10))
+// GetPlayerBans takes a list of steamIDs and returns PlayerBan slice
+func GetPlayerBans(steamIDs []uint64, apiKey string) ([]PlayerBan, error) {
+	strSteamIDs := make([]string, len(steamIDs))
+	for _, id := range steamIDs {
+		strSteamIDs = append(strSteamIDs, strconv.FormatUint(id, 10))
 	}
 
 	data := url.Values{}
 	data.Add("key", apiKey)
-	data.Add("steamids", strings.Join(strIds, ","))
+	data.Add("steamids", strings.Join(strSteamIDs, ","))
 
-	var resp playerBansJson
+	var resp playerBansJSON
 	err := getPlayerBans.Request(data, &resp)
 	if err != nil {
 		return nil, err

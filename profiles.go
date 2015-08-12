@@ -6,52 +6,64 @@ import (
 	"strings"
 )
 
+// CommunityVisibilityState contains the visibility of the user
 type CommunityVisibilityState int
 
 const (
-	Private     CommunityVisibilityState = 1
-	FriendsOnly                          = 2
-	Public                               = 3
+	// Private community visibility state
+	Private CommunityVisibilityState = 1
+	// FriendsOnly community visibility state
+	FriendsOnly = 2
+	// Public community visibility state
+	Public = 3
 )
 
+// PersonaState is the visibility state
 type PersonaState int
 
 const (
-	// The offline persona state is also
+	// Offline persona state is also
 	// used when the steam user has set his profile
 	// to private.
 	Offline PersonaState = iota
 
+	// Online is online
 	Online
+	// Busy is busy
 	Busy
+	// Away is away
 	Away
+	// Snooze is sniooze
 	Snooze
+	// LookingToTrade is looking to trade
 	LookingToTrade
+	// LookingToPlay is looking ot play
 	LookingToPlay
 )
 
+// PlayerSummary gives an overall state of the user in steam community
 type PlayerSummary struct {
-	SteamId                  uint64 `json:",string"`
+	SteamID                  uint64 `json:",string"`
 	CommunityVisibilityState CommunityVisibilityState
-	ProfileUrl               string
+	ProfileURL               string
 
 	ProfileState int // Set to 1 if the player has configured the profile.
 	PersonaName  string
 	LastLogoff   int64
 	PersonaState PersonaState
 
-	SmallAvatarUrl  string `json:"avatar"`       // 32x32
-	MediumAvatarUrl string `json:"avatarmedium"` // 64x64
-	LargeAvatarUrl  string `json:"avatarfull"`   // 184x184
+	SmallAvatarURL  string `json:"avatar"`       // 32x32
+	MediumAvatarURL string `json:"avatarmedium"` // 64x64
+	LargeAvatarURL  string `json:"avatarfull"`   // 184x184
 
 	TimeCreated   int64  `json:",omitempty"`
 	RealName      string `json:",omitempty"`
-	PrimaryClanId uint64 `json:",string,omitempty"`
-
 	GameExtraInfo string `json:",omitempty"`
+
+	PrimaryClanID uint64 `json:",string,omitempty"`
 }
 
-type playerSummaryJson struct {
+type playerSummaryJSON struct {
 	Response struct {
 		Players []PlayerSummary
 	}
@@ -59,7 +71,7 @@ type playerSummaryJson struct {
 
 var getPlayerSummaries = NewSteamMethod("ISteamUser", "GetPlayerSummaries", 2)
 
-// Fetches the player summaries for the given Steam Ids.
+// GetPlayerSummaries Fetches the player summaries for the given Steam Ids.
 func GetPlayerSummaries(ids []uint64, apiKey string) ([]PlayerSummary, error) {
 	strIds := make([]string, len(ids))
 	for _, id := range ids {
@@ -69,7 +81,7 @@ func GetPlayerSummaries(ids []uint64, apiKey string) ([]PlayerSummary, error) {
 	vals.Add("key", apiKey)
 	vals.Add("steamids", strings.Join(strIds, ","))
 
-	var resp playerSummaryJson
+	var resp playerSummaryJSON
 	err := getPlayerSummaries.Request(vals, &resp)
 	if err != nil {
 		return nil, err
@@ -77,21 +89,23 @@ func GetPlayerSummaries(ids []uint64, apiKey string) ([]PlayerSummary, error) {
 	return resp.Response.Players, nil
 }
 
-var resolveVanityUrl = NewSteamMethod("ISteamUser", "ResolveVanityUrl", 1)
+var resolveVanityURL = NewSteamMethod("ISteamUser", "ResolveVanityURL", 1)
 
-type ResolveVanityUrlResponse struct {
+// ResolveVanityURLResponse resolves the response from steam
+type ResolveVanityURLResponse struct {
 	Success int
-	SteamId uint64 `json:",omitempty,string"`
+	SteamID uint64 `json:",omitempty,string"`
 	Message string `json:",omitempty"`
 }
 
-func ResolveVanityUrl(vanityUrl string, apiKey string) (*ResolveVanityUrlResponse, error) {
+// ResolveVanityURL should return a response
+func ResolveVanityURL(vanityURL string, apiKey string) (*ResolveVanityURLResponse, error) {
 	data := url.Values{}
 	data.Add("key", apiKey)
-	data.Add("vanityurl", vanityUrl)
+	data.Add("vanityURL", vanityURL)
 
-	var resp ResolveVanityUrlResponse
-	err := resolveVanityUrl.Request(data, &resp)
+	var resp ResolveVanityURLResponse
+	err := resolveVanityURL.Request(data, &resp)
 	if err != nil {
 		return nil, err
 	}
