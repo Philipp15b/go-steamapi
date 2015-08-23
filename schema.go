@@ -131,8 +131,8 @@ type KillEaterScoreType struct {
 }
 
 // GetSchema Fetches the Schema for the given game.
-func GetSchema(appID int, language, APIKey string) (*Schema, error) {
-	getSchema := NewSteamMethod("IEconItems_"+strconv.Itoa(appID), "GetSchema", 1)
+func GetSchema(baseSteamAPIURL string, appID int, language, APIKey string) (*Schema, error) {
+	getSchema := NewSteamMethod(baseSteamAPIURL, "IEconItems_"+strconv.Itoa(appID), "GetSchema", 1)
 
 	vals := url.Values{}
 	vals.Add("key", APIKey)

@@ -10,14 +10,15 @@ import (
 	"strconv"
 )
 
-const steamURL = "http://api.steampowered.com/%v/%v/v%v/"
+// BaseSteamWebURL is the steam url used to do requests
+const BaseSteamAPIURL = "https://api.steampowered.com"
 
 // A SteamMethod represents a Steam Web API method.
 type SteamMethod string
 
 // NewSteamMethod creates a new SteamMethod.
-func NewSteamMethod(interf, method string, version int) SteamMethod {
-	m := fmt.Sprintf(steamURL, interf, method, strconv.Itoa(version))
+func NewSteamMethod(baseSteamAPIURL, interf, method string, version int) SteamMethod {
+	m := fmt.Sprintf("%v/%v/%v/v%v/", baseSteamAPIURL, interf, method, strconv.Itoa(version))
 	return SteamMethod(m)
 }
 

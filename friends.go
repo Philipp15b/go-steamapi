@@ -28,14 +28,15 @@ type playerFriendsListJSON struct {
 	}
 }
 
-var getFriendsList = NewSteamMethod("ISteamUser", "GetFriendList", 1)
-
 // GetFriendsList Fetches the friends of the given steam id and returns the result.
 //
 // It returns nil if the profile is private or if there were no friends
 // found for the given relationship. In either one of both cases, no error
 // is returned.
-func GetFriendsList(steamID uint64, filter Relationship, apiKey string) ([]SteamFriend, error) {
+func GetFriendsList(baseSteamAPIURL string, steamID uint64, filter Relationship, apiKey string) ([]SteamFriend, error) {
+
+	var getFriendsList = NewSteamMethod(baseSteamAPIURL, "ISteamUser", "GetFriendList", 1)
+
 	data := url.Values{}
 	data.Add("key", apiKey)
 	data.Add("steamid", strconv.FormatUint(steamID, 10))
