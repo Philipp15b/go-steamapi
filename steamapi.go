@@ -38,7 +38,7 @@ func (s SteamMethod) Request(data url.Values, v interface{}) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return fmt.Errorf("Status code %d returned by %v", resp.StatusCode, string(s))
+		return fmt.Errorf("steamapi %s Status code %d", s, resp.StatusCode)
 	}
 
 	d := json.NewDecoder(resp.Body)

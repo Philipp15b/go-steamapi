@@ -60,12 +60,12 @@ type EquipInfo struct {
 }
 
 // GetPlayerItems Fetches the player summaries for the given Steam Id.
-func GetPlayerItems(baseSteamAPIURL string, id uint64, app int, apiKey string) (*Inventory, error) {
-	getPlayerItems := NewSteamMethod(baseSteamAPIURL, "IEconItems_"+strconv.Itoa(app), "GetPlayerItems", 1)
+func GetPlayerItems(baseSteamAPIURL string, steamID uint64, appID uint64, apiKey string) (*Inventory, error) {
+	getPlayerItems := NewSteamMethod(baseSteamAPIURL, "IEconItems_"+strconv.FormatUint(appID, 10), "GetPlayerItems", 1)
 
 	vals := url.Values{}
 	vals.Add("key", apiKey)
-	vals.Add("SteamId", strconv.FormatUint(id, 10))
+	vals.Add("SteamId", strconv.FormatUint(steamID, 10))
 
 	var resp playerItemsJSON
 	err := getPlayerItems.Request(vals, &resp)
