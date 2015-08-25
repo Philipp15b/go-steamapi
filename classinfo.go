@@ -21,13 +21,13 @@ type Info struct {
 }
 
 // GetAssetClassInfo returns asset details
-func GetAssetClassInfo(baseSteamAPIURL string, appID uint32, classID uint64, language, apiKey string) (*Info, error) {
+func GetAssetClassInfo(baseSteamAPIURL string, appID, classID uint64, language, apiKey string) (*Info, error) {
 
 	var getAssetClassInfo = NewSteamMethod(baseSteamAPIURL, "ISteamEconomy", "GetAssetClassInfo", 1)
 
 	vals := url.Values{}
 	vals.Add("key", apiKey)
-	vals.Add("appid", strconv.FormatUint(uint64(appID), 10))
+	vals.Add("appid", strconv.FormatUint(appID, 10))
 	vals.Add("language", language)
 	vals.Add("class_count", "1")
 	vals.Add("classid0", strconv.FormatUint(classID, 10))

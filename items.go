@@ -18,15 +18,15 @@ type Inventory struct {
 
 // Item in an inventory
 type Item struct {
-	ID                uint32
-	OriginalID        uint32 `json:"original_id"`
+	ID                uint64
+	OriginalID        uint64 `json:"original_id"`
 	Defindex          int
 	Level             int
 	Quantity          int
 	Origin            int
 	Untradeable       bool   `json:"flag_cannot_trade,omitempty"`
 	Uncraftable       bool   `json:"flag_cannot_craft,omitempty"`
-	InventoryToken    uint32 `json:",inventory"`
+	InventoryToken    uint64 `json:",inventory"`
 	Quality           int
 	CustomName        string      `json:"custom_name,omitempty"`
 	CustomDescription string      `json:"custom_description,omitempty"`

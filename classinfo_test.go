@@ -24,7 +24,7 @@ func TestMockOkGetAssetClassInfo(t *testing.T) {
 		Marketable:     "1",
 	}
 
-	appID := uint32(2)
+	appID := uint64(2)
 	classID := uint64(1234)
 	language := "en"
 	apiKey := "123"
