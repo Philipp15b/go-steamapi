@@ -156,10 +156,14 @@ func TestMockOkGetPlayerItems(t *testing.T) {
 		},
 	}
 
-	playerItems := GetPlayerItems(ts.URL, steamID, appID, apiKey)
+	playerItems, err := GetPlayerItems(ts.URL, steamID, appID, apiKey)
+	if err != nil {
+		t.Errorf("GetPlayerItems failure: %v", err)
+		return
+	}
 
 	// Is result marshallable?
-	_, err := json.Marshal(playerItems)
+	_, err = json.Marshal(playerItems)
 	if err != nil {
 		t.Errorf("GetPlayerItems result marshalling failure: %v", err)
 		return

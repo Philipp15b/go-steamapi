@@ -1,6 +1,7 @@
 package steamapi
 
 import (
+	"fmt"
 	"net/url"
 	"strconv"
 )
@@ -60,7 +61,7 @@ type EquipInfo struct {
 }
 
 // GetPlayerItems Fetches the player summaries for the given Steam Id.
-func GetPlayerItems(baseSteamAPIURL string, steamID uint64, appID uint64, apiKey string) *Inventory {
+func GetPlayerItems(baseSteamAPIURL string, steamID uint64, appID uint64, apiKey string) (*Inventory, error) {
 
 	getPlayerItems := NewSteamMethod(baseSteamAPIURL, "IEconItems_"+strconv.FormatUint(appID, 10), "GetPlayerItems", 1)
 
@@ -70,8 +71,11 @@ func GetPlayerItems(baseSteamAPIURL string, steamID uint64, appID uint64, apiKey
 
 	var resp playerItemsJSON
 
-	// Ignoring error as some fields can be of different types
-	_ = getPlayerItems.Request(vals, &resp)
+	err := getPlayerItems.Request(vals, &resp)
 
-	return &resp.Result
+	if err != nil {
+		return nil, fmt.Errorf("steamapi GetPlayerItems: %v", err)
+	}
+
+	return &resp.Result, nil
 }
