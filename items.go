@@ -44,7 +44,7 @@ func (i *Item) Position() uint16 {
 type Attribute struct {
 	Defindex    int
 	Value       int
-	FloatValue  float64      `json:",omitempty"`
+	FloatValue  float64      `json:"float_value,omitempty"`
 	AccountInfo *AccountInfo `json:",omitempty"`
 }
 

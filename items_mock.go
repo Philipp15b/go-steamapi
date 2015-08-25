@@ -11,7 +11,7 @@ func GetMockOKGetPlayerItems() string {
 				"items": [
 					{
 						"id": 1234567894,
-						"original_id": 1234567894,
+						"original_id": 123456,
 						"defindex": 5470,
 						"level": 1,
 						"quality": 4,
@@ -22,49 +22,7 @@ func GetMockOKGetPlayerItems() string {
 								"class": 23,
 								"slot": 6
 							}
-						]
-						
-					},
-					{
-						"id": 1234567895,
-						"original_id": 1234567895,
-						"defindex": 15001,
-						"level": 1,
-						"quality": 4,
-						"inventory": 30,
-						"quantity": 1,
-						"flag_cannot_trade": true,
-						"attributes": [
-							{
-								"defindex": 153,
-								"value": 1065353216,
-								"float_value": 1
-							},
-							{
-								"defindex": 16,
-								"value": 1,
-								"float_value": 1.4012984643248171e-045
-							}
-						]
-						
-					},
-					{
-						"id": 1234567896,
-						"original_id": 1234567896,
-						"defindex": 10068,
-						"level": 1,
-						"quality": 4,
-						"inventory": 5,
-						"quantity": 1,
-						"flag_cannot_trade": true,
-						"attributes": [
-							{
-								"defindex": 153,
-								"value": 1065353216,
-								"float_value": 1
-							}
-						]
-						
+						]				
 					},
 					{
 						"id": 1234567897,
@@ -74,43 +32,13 @@ func GetMockOKGetPlayerItems() string {
 						"quality": 4,
 						"inventory": 25,
 						"quantity": 1,
-						"equipped": [
-							{
-								"class": 4,
-								"slot": 4
-							}
-						]
-						
-					},
-					{
-						"id": 1234567898,
-						"original_id": 1234567898,
-						"defindex": 7480,
-						"level": 1,
-						"quality": 4,
-						"inventory": 142,
-						"quantity": 1,
-						"equipped": [
-							{
-								"class": 15,
-								"slot": 0
-							}
-						]
-						,
-						"flag_cannot_trade": true,
 						"attributes": [
-							{
-								"defindex": 153,
-								"value": 1,
-								"float_value": 1.4012984643248171e-045
-							},
-							{
-								"defindex": 213,
-								"value": 1,
-								"float_value": 1.4012984643248171e-045
-							}
-						]
-						
+				            {
+				              "defindex": 8,
+				              "value": 1049511890,
+				              "float_value": 0.27789169549942017
+				            }
+			            ]
 					}
 				]
 				
