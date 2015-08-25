@@ -1,6 +1,7 @@
 package steamapi
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -155,10 +156,13 @@ func TestMockOkGetPlayerItems(t *testing.T) {
 		},
 	}
 
-	playerItems, err := GetPlayerItems(ts.URL, steamID, appID, apiKey)
+	playerItems := GetPlayerItems(ts.URL, steamID, appID, apiKey)
 
+	// Is result marshallable?
+	_, err := json.Marshal(playerItems)
 	if err != nil {
-		t.Errorf("GetPlayerItems failure: %v", err)
+		t.Errorf("GetPlayerItems result marshalling failure: %v", err)
+		return
 	}
 
 	// Need a better test

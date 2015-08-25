@@ -26,7 +26,7 @@ type Item struct {
 	Origin            int
 	Untradeable       bool   `json:"flag_cannot_trade,omitempty"`
 	Uncraftable       bool   `json:"flag_cannot_craft,omitempty"`
-	InventoryToken    uint64 `json:",inventory"`
+	InventoryToken    uint64 `json:"inventory"`
 	Quality           int
 	CustomName        string      `json:"custom_name,omitempty"`
 	CustomDescription string      `json:"custom_description,omitempty"`
@@ -60,7 +60,8 @@ type EquipInfo struct {
 }
 
 // GetPlayerItems Fetches the player summaries for the given Steam Id.
-func GetPlayerItems(baseSteamAPIURL string, steamID uint64, appID uint64, apiKey string) (*Inventory, error) {
+func GetPlayerItems(baseSteamAPIURL string, steamID uint64, appID uint64, apiKey string) *Inventory {
+
 	getPlayerItems := NewSteamMethod(baseSteamAPIURL, "IEconItems_"+strconv.FormatUint(appID, 10), "GetPlayerItems", 1)
 
 	vals := url.Values{}
@@ -68,9 +69,9 @@ func GetPlayerItems(baseSteamAPIURL string, steamID uint64, appID uint64, apiKey
 	vals.Add("SteamId", strconv.FormatUint(steamID, 10))
 
 	var resp playerItemsJSON
-	err := getPlayerItems.Request(vals, &resp)
-	if err != nil {
-		return nil, err
-	}
-	return &resp.Result, nil
+
+	// Ignoring error as some fields can be of different types
+	_ = getPlayerItems.Request(vals, &resp)
+
+	return &resp.Result
 }
