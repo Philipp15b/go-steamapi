@@ -27,7 +27,7 @@ type Item struct {
 	Origin            int
 	Untradeable       bool   `json:"flag_cannot_trade,omitempty"`
 	Uncraftable       bool   `json:"flag_cannot_craft,omitempty"`
-	InventoryToken    uint64 `json:"inventory"`
+	InventoryToken    uint32 `json:"inventory"`
 	Quality           int
 	CustomName        string      `json:"custom_name,omitempty"`
 	CustomDescription string      `json:"custom_description,omitempty"`
