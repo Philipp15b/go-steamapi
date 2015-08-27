@@ -21,7 +21,7 @@ type Inventory struct {
 type Item struct {
 	ID                uint64
 	OriginalID        uint64 `json:"original_id"`
-	Defindex          int
+	Defindex          uint32
 	Level             int
 	Quantity          int
 	Origin            int
@@ -42,7 +42,7 @@ func (i *Item) Position() uint16 {
 
 // Attribute is the attribute of an item
 type Attribute struct {
-	Defindex    int
+	Defindex    uint32
 	Value       int
 	FloatValue  float64      `json:"float_value,omitempty"`
 	AccountInfo *AccountInfo `json:",omitempty"`
