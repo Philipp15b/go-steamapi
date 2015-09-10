@@ -72,14 +72,6 @@ type CEconTradeOffers struct {
 	Descriptions inventory.Descriptions `json:"descriptions"`
 }
 
-// SteamTradeOfferID is the identifier of the tradeoffer within steam network
-type SteamTradeOfferID uint64
-
-// String will turn a steamID into a string
-func (steamTradeOfferID SteamTradeOfferID) String() string {
-	return strconv.FormatUint(uint64(steamTradeOfferID), 10)
-}
-
 type ieconGetTradeOffersResponse struct {
 	Response CEconTradeOffers `json:"response"`
 }
@@ -158,14 +150,14 @@ func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, steamID uint64, t
 }
 
 // IEconActionTradeOffer declines a TO created by someone else
-func IEconActionTradeOffer(baseSteamAPIURL string, action string, apiKey string, tradeOfferID SteamTradeOfferID) error {
+func IEconActionTradeOffer(baseSteamAPIURL string, action string, apiKey string, tradeOfferID uint64) error {
 
 	if action != "Decline" && action != "Cancel" {
 		return fmt.Errorf("tradeoffer IEconActionTradeOffer doesn't support %v action", action)
 	}
 	querystring := url.Values{}
 	querystring.Add("key", apiKey)
-	querystring.Add("tradeofferid", tradeOfferID.String())
+	querystring.Add("tradeofferid", strconv.FormatUint(tradeOfferID, 10))
 
 	resp, err := http.Get(
 		baseSteamAPIURL + "/IEconService/" + action + "TradeOffer/v0001?" + querystring.Encode())
