@@ -56,7 +56,7 @@ type CEconTradeOffer struct {
 	TradeOfferID   uint64 `json:",string"`
 	OtherAccountID uint64 `json:"accountid_other"`
 	Message        string
-	ExpirationTime uint32        `json:"expiraton_time"`
+	ExpirationTime uint32        `json:"expiration_time"`
 	State          State         `json:"trade_offer_state"`
 	ToGive         []*CEconAsset `json:"items_to_give"`
 	ToReceive      []*CEconAsset `json:"items_to_receive"`
@@ -131,7 +131,7 @@ func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, steamID uint64, t
 	querystring.Add("tradeofferid", strconv.FormatUint(tradeOfferID, 10))
 	querystring.Add("language", "en")
 
-	resp, err := http.Get(baseSteamAPIURL + "/IEconService/GetTradeOffer/v0001?" + querystring.Encode())
+	resp, err := http.Get(baseSteamAPIURL + "/IEconService/GetTradeOffer/v1?" + querystring.Encode())
 
 	if err != nil {
 		return nil, fmt.Errorf("tradeoffer IEconGetTradeOffer http.Get: error %v", err)
