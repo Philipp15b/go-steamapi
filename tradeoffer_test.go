@@ -4,16 +4,18 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
 )
 
 func TestIEconGetTradeOffer(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, getMockActiveStateIEconGetTradeOffer())
-	}))
+	ts := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			fmt.Fprintf(w, getMockActiveStateIEconGetTradeOffer())
+		}),
+	)
+
 	defer ts.Close()
 
 	expectedItem := CEconAsset{
@@ -33,8 +35,8 @@ func TestIEconGetTradeOffer(t *testing.T) {
 		Message:        "",
 		ExpirationTime: 1300000000,
 		State:          2,
-		ToGive:         []*CEconAsset{&expectedItem},
-		ToReceive:      []*CEconAsset{},
+		ToGive:         []*CEconAsset{},
+		ToReceive:      []*CEconAsset{&expectedItem},
 		IsOurs:         true,
 		TimeCreated:    1300000000,
 		TimeUpdated:    1300000000,
@@ -47,7 +49,20 @@ func TestIEconGetTradeOffer(t *testing.T) {
 		return
 	}
 
-	if !reflect.DeepEqual(TOgot, expectedCETO) {
+	if TOgot.TradeOfferID != expectedCETO.TradeOfferID ||
+		TOgot.OtherAccountID != expectedCETO.OtherAccountID ||
+		TOgot.Message != expectedCETO.Message ||
+		TOgot.ExpirationTime != expectedCETO.ExpirationTime ||
+		TOgot.State != expectedCETO.State ||
+		TOgot.IsOurs != expectedCETO.IsOurs ||
+		TOgot.TimeCreated != expectedCETO.TimeCreated ||
+		TOgot.TimeUpdated != expectedCETO.TimeUpdated ||
+		len(TOgot.ToGive) != len(expectedCETO.ToGive) ||
+		len(TOgot.ToReceive) != len(expectedCETO.ToReceive) {
+		t.Errorf("IEconGetTradeOffer expected %v, got %v", expectedCETO, TOgot)
+	}
+
+	if *TOgot.ToReceive[0] != *expectedCETO.ToReceive[0] {
 		t.Errorf("IEconGetTradeOffer expected %v, got %v", expectedCETO, TOgot)
 	}
 

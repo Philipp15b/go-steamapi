@@ -114,15 +114,15 @@ func IEconGetTradeOffers(baseSteamAPIURL string, apiKey string) (*CEconTradeOffe
 }
 
 type ieconGetTradeOfferResponse struct {
-	Response CEconTradeOffer `json:"response"`
+	Response struct {
+		Offer CEconTradeOffer
+	}
 }
 
 // IEconGetTradeOffer retrieves details about a specific tradeoffer
 func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, steamID uint64, tradeOfferID uint64) (
 	*CEconTradeOffer, error,
 ) {
-
-	toResp := &ieconGetTradeOfferResponse{}
 
 	querystring := url.Values{}
 	querystring.Add("key", apiKey)
@@ -139,14 +139,14 @@ func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, steamID uint64, t
 
 	defer resp.Body.Close()
 
-	decoder := json.NewDecoder(resp.Body)
-	err = decoder.Decode(toResp)
+	toResp := ieconGetTradeOfferResponse{}
+	err = json.NewDecoder(resp.Body).Decode(&toResp)
 
 	if err != nil {
 		return nil, fmt.Errorf("tradeoffer IEconGetTradeOffer Decode: error %v", err)
 	}
 
-	return &toResp.Response, nil
+	return &toResp.Response.Offer, nil
 }
 
 // IEconActionTradeOffer declines a TO created by someone else
