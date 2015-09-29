@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
-
-	"github.com/vincentserpoul/mangosteam/inventory"
 )
 
 // State represents the state of the tradeoffer, see constants
@@ -65,31 +63,39 @@ type CEconTradeOffer struct {
 	TimeUpdated    uint32        `json:"time_updated"`
 }
 
-// CEconTradeOffers contains a list of tradeoffers, sent and received
+// CEconTradeOffers represent the list of different tradeoffers types
 type CEconTradeOffers struct {
-	Sent         []*CEconTradeOffer     `json:"trade_offers_sent"`
-	Received     []*CEconTradeOffer     `json:"trade_offers_received"`
-	Descriptions inventory.Descriptions `json:"descriptions"`
+	Sent     []*CEconTradeOffer `json:"trade_offers_sent"`
+	Received []*CEconTradeOffer `json:"trade_offers_received"`
 }
 
 type ieconGetTradeOffersResponse struct {
-	Response CEconTradeOffers `json:"response"`
+	Response struct {
+		CEconTradeOffers
+	}
 }
 
 // IEconGetTradeOffers retrieves a list of tradeoffers
-func IEconGetTradeOffers(baseSteamAPIURL string, apiKey string) (*CEconTradeOffers, error) {
-
-	tosResp := &ieconGetTradeOffersResponse{}
+func IEconGetTradeOffers(
+	baseSteamAPIURL string,
+	apiKey string,
+	getSentOffers bool,
+	getReceivedOffers bool,
+	getDescriptions bool,
+	activeOnly bool,
+	historicalOnly bool,
+	timeHistoricalCutoff int64,
+) (*CEconTradeOffers, error) {
 
 	querystring := url.Values{}
 	querystring.Add("key", apiKey)
-	querystring.Add("get_sent_offers", "1")
-	querystring.Add("get_received_offers", "1")
-	querystring.Add("get_descriptions", "1")
+	querystring.Add("get_sent_offers", boolToStr(getSentOffers))
+	querystring.Add("get_received_offers", boolToStr(getReceivedOffers))
+	querystring.Add("get_descriptions", boolToStr(getDescriptions))
 	querystring.Add("language", "en")
-	querystring.Add("active_only", "0")
-	querystring.Add("historical_only", "0")
-	querystring.Add("time_historical_cutoff", "1")
+	querystring.Add("active_only", boolToStr(activeOnly))
+	querystring.Add("historical_only", boolToStr(historicalOnly))
+	querystring.Add("time_historical_cutoff", strconv.FormatInt(timeHistoricalCutoff, 10))
 
 	resp, err := http.Get(baseSteamAPIURL + "/IEconService/GetTradeOffers/v0001?" + querystring.Encode())
 
@@ -103,14 +109,14 @@ func IEconGetTradeOffers(baseSteamAPIURL string, apiKey string) (*CEconTradeOffe
 
 	defer resp.Body.Close()
 
-	decoder := json.NewDecoder(resp.Body)
-	err = decoder.Decode(tosResp)
+	tosResp := &ieconGetTradeOffersResponse{}
+	err = json.NewDecoder(resp.Body).Decode(tosResp)
 
 	if err != nil {
 		return nil, fmt.Errorf("tradeoffer IEconGetTradeOffers Decode: error %v", err)
 	}
 
-	return &tosResp.Response, nil
+	return &tosResp.Response.CEconTradeOffers, nil
 }
 
 type ieconGetTradeOfferResponse struct {
@@ -173,5 +179,14 @@ func IEconActionTradeOffer(baseSteamAPIURL string, action string, apiKey string,
 	}
 
 	return nil
+
+}
+
+func boolToStr(b bool) string {
+	if b {
+		return "1"
+	}
+
+	return "0"
 
 }
