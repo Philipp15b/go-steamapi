@@ -19,14 +19,15 @@ func TestIEconGetTradeOffer(t *testing.T) {
 	defer ts.Close()
 
 	expectedItem := CEconAsset{
-		AppID:      123,
-		ContextID:  2,
-		AssetID:    1234553,
-		CurrencyID: 0,
-		ClassID:    888881,
-		InstanceID: 0,
-		Amount:     1,
-		Missing:    false,
+		AppID:          123,
+		ContextID:      2,
+		AssetID:        1234553,
+		CurrencyID:     0,
+		ClassID:        888881,
+		InstanceID:     0,
+		Amount:         1,
+		Missing:        false,
+		MarketHashName: "testmkt",
 	}
 
 	expectedCETO := CEconTradeOffer{
@@ -65,7 +66,6 @@ func TestIEconGetTradeOffer(t *testing.T) {
 	if *TOgot.ToReceive[0] != *expectedCETO.ToReceive[0] {
 		t.Errorf("IEconGetTradeOffer expected %v, got %v", expectedCETO, TOgot)
 	}
-
 }
 
 func TestIEconGetTradeOffers(t *testing.T) {
@@ -80,14 +80,15 @@ func TestIEconGetTradeOffers(t *testing.T) {
 	defer ts.Close()
 
 	expectedItem := CEconAsset{
-		AppID:      123,
-		ContextID:  2,
-		AssetID:    1234553,
-		CurrencyID: 0,
-		ClassID:    888881,
-		InstanceID: 0,
-		Amount:     1,
-		Missing:    false,
+		AppID:          123,
+		ContextID:      2,
+		AssetID:        1234553,
+		CurrencyID:     0,
+		ClassID:        888881,
+		InstanceID:     0,
+		Amount:         1,
+		Missing:        false,
+		MarketHashName: "testmkt",
 	}
 
 	expectedCETOsSent := []*CEconTradeOffer{

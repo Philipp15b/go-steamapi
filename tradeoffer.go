@@ -39,14 +39,15 @@ const (
 
 // CEconAsset represents an asset in steam web api
 type CEconAsset struct {
-	AppID      uint   `json:",string"`
-	ContextID  uint64 `json:",string"`
-	AssetID    uint64 `json:",string"`
-	CurrencyID uint64 `json:",string"`
-	ClassID    uint64 `json:",string"`
-	InstanceID uint64 `json:",string"`
-	Amount     uint64 `json:",string"`
-	Missing    bool
+	AppID          uint   `json:",string"`
+	ContextID      uint64 `json:",string"`
+	AssetID        uint64 `json:",string"`
+	CurrencyID     uint64 `json:",string"`
+	ClassID        uint64 `json:",string"`
+	InstanceID     uint64 `json:",string"`
+	Amount         uint64 `json:",string"`
+	Missing        bool
+	MarketHashName string
 }
 
 // CEconTradeOffer represent the to from the steam API
@@ -121,8 +122,32 @@ func IEconGetTradeOffers(
 
 type ieconGetTradeOfferResponse struct {
 	Response struct {
-		Offer CEconTradeOffer
+		Offer        CEconTradeOffer
+		Descriptions []ItemDescription
 	}
+}
+
+// ItemDescription represents the details about the items unique w classid instanceid
+type ItemDescription struct {
+	AppID          uint   `json:"appid"`
+	ClassID        uint64 `json:"classid,string"`
+	InstanceID     uint64 `json:"instanceid,string"`
+	MarketHashName string `json:"market_hash_name"`
+	IconURL        string `json:"icon_url"`
+	NameColor      string `json:"name_color"`
+	Name           string `json:"name"`
+}
+
+func findMarketHashName(itemD []ItemDescription, appID uint, classID, instanceID uint64) string {
+	for _, description := range itemD {
+		if description.AppID == appID &&
+			description.ClassID == classID &&
+			description.InstanceID == instanceID {
+			return description.MarketHashName
+		}
+	}
+
+	return ""
 }
 
 // IEconGetTradeOffer retrieves details about a specific tradeoffer
@@ -150,6 +175,16 @@ func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, steamID uint64, t
 
 	if err != nil {
 		return nil, fmt.Errorf("tradeoffer IEconGetTradeOffer Decode: error %v", err)
+	}
+
+	for giveIndex, asset := range toResp.Response.Offer.ToGive {
+		toResp.Response.Offer.ToGive[giveIndex].MarketHashName =
+			findMarketHashName(toResp.Response.Descriptions, asset.AppID, asset.ClassID, asset.InstanceID)
+	}
+
+	for receiveIndex, asset := range toResp.Response.Offer.ToReceive {
+		toResp.Response.Offer.ToReceive[receiveIndex].MarketHashName =
+			findMarketHashName(toResp.Response.Descriptions, asset.AppID, asset.ClassID, asset.InstanceID)
 	}
 
 	return &toResp.Response.Offer, nil
