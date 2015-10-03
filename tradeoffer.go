@@ -62,7 +62,7 @@ type CEconTradeOffer struct {
 	IsOurs         bool          `json:"is_our_offer"`
 	TimeCreated    uint32        `json:"time_created"`
 	TimeUpdated    uint32        `json:"time_updated"`
-	TradeID        uint64        `json:"tradeid"`
+	TradeID        uint64        `json:"tradeid,string"`
 }
 
 // CEconTradeOffers represent the list of different tradeoffers types
