@@ -73,7 +73,7 @@ func TestIEconGetTradeOffers(t *testing.T) {
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-			fmt.Fprintf(w, getMockIEconGetTradeOffers())
+			fmt.Fprintf(w, GetMockIEconGetTradeOffers())
 		}),
 	)
 
