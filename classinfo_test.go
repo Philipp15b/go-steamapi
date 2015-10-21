@@ -12,7 +12,7 @@ func TestMockOkGetAssetClassInfo(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, getMockOKGetAssetClassInfo())
+		fmt.Fprintf(w, GetMockOKGetAssetClassInfo())
 	}))
 	defer ts.Close()
 
