@@ -1,8 +1,8 @@
 package steamapi
 
-// getMockOKGetAssetClassInfo steam API gives class_id, market_hash_name...
+// GetMockOKGetAssetClassInfo steam API gives class_id, market_hash_name...
 // http://api.steampowered.com/ISteamEconomy/GetAssetClassInfo/v0001?key=XXX&format=json&language=en&appid=XXX&class_count=2&classid0=123456789
-func getMockOKGetAssetClassInfo() string {
+func GetMockOKGetAssetClassInfo() string {
 	return `
 		{
 			"result": {
