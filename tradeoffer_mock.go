@@ -88,7 +88,8 @@ func getMockActiveStateIEconGetTradeOffer() string {
     }`
 }
 
-func getMockIEconGetTradeOffers() string {
+// GetMockIEconGetTradeOffers ..
+func GetMockIEconGetTradeOffers() string {
 	return `
     {
       "response": {
