@@ -1,6 +1,7 @@
 package steamapi
 
-func getMockActiveStateIEconGetTradeOffer() string {
+// GetMockActiveStateIEconGetTradeOffer ...
+func GetMockActiveStateIEconGetTradeOffer() string {
 	return `
     {
       "response": {
