@@ -3,6 +3,7 @@ package steamapi
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -164,9 +165,17 @@ func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, steamID uint64, t
 	querystring.Add("language", "en")
 
 	resp, err := http.Get(baseSteamAPIURL + "/IEconService/GetTradeOffer/v1?" + querystring.Encode())
-
 	if err != nil {
 		return nil, fmt.Errorf("tradeoffer IEconGetTradeOffer http.Get: error %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		body, errBody := ioutil.ReadAll(resp.Body)
+		return nil,
+			fmt.Errorf("tradeoffer IEconGetTradeOffer: steam responded with a status %d with the message: %s (%v)",
+				resp.StatusCode,
+				body,
+				errBody,
+			)
 	}
 
 	defer resp.Body.Close()
@@ -204,8 +213,17 @@ func IEconActionTradeOffer(baseSteamAPIURL string, action string, apiKey string,
 	resp, err := http.Get(
 		baseSteamAPIURL + "/IEconService/" + action + "TradeOffer/v0001?" + querystring.Encode())
 
-	if resp.StatusCode != 200 || err != nil {
-		return fmt.Errorf("tradeoffer IEcon%sTradeOffer http.Get: %v error %v", action, resp.StatusCode, err)
+	if err != nil {
+		return fmt.Errorf("tradeoffer IEconGetTradeOffer http.Get: error %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		body, errBody := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("tradeoffer IEcon%sTradeOffer: steam responded with a status %d with the message: %s (%v)",
+			action,
+			resp.StatusCode,
+			body,
+			errBody,
+		)
 	}
 
 	err = resp.Body.Close()
