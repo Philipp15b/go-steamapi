@@ -47,6 +47,8 @@ type PlayerSummary struct {
 	TimeCreated   int64  `json:",omitempty"`
 	RealName      string `json:",omitempty"`
 	PrimaryClanId uint64 `json:",string,omitempty"`
+
+	GameExtraInfo string `json:",omitempty"`
 }
 
 type playerSummaryJson struct {
