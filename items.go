@@ -67,7 +67,7 @@ func GetPlayerItems(baseSteamAPIURL string, steamID uint64, appID uint64, apiKey
 
 	vals := url.Values{}
 	vals.Add("key", apiKey)
-	vals.Add("SteamId", strconv.FormatUint(steamID, 10))
+	vals.Add("steamid", strconv.FormatUint(steamID, 10))
 
 	var resp playerItemsJSON
 
