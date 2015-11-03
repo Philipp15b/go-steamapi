@@ -187,6 +187,17 @@ func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, steamID uint64, t
 		return nil, fmt.Errorf("tradeoffer IEconGetTradeOffer Decode: error %v", err)
 	}
 
+	// If the state is 0, it means there is a mistake
+	if toResp.Response.Offer.State == 0 {
+		body, errBody := ioutil.ReadAll(resp.Body)
+		return nil,
+			fmt.Errorf("tradeoffer IEconGetTradeOffer: steam responded with a status %d with the message: %s (%v)",
+				resp.StatusCode,
+				body,
+				errBody,
+			)
+	}
+
 	for giveIndex, asset := range toResp.Response.Offer.ToGive {
 		toResp.Response.Offer.ToGive[giveIndex].MarketHashName =
 			findMarketHashName(toResp.Response.Descriptions, asset.AppID, asset.ClassID, asset.InstanceID)
