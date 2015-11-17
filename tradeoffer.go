@@ -153,13 +153,12 @@ func findMarketHashName(itemD []ItemDescription, appID uint, classID, instanceID
 }
 
 // IEconGetTradeOffer retrieves details about a specific tradeoffer
-func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, steamID uint64, tradeOfferID uint64) (
+func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, tradeOfferID uint64) (
 	*CEconTradeOffer, error,
 ) {
 
 	querystring := url.Values{}
 	querystring.Add("key", apiKey)
-	querystring.Add("steamid", strconv.FormatUint(steamID, 10))
 	querystring.Add("format", "json")
 	querystring.Add("tradeofferid", strconv.FormatUint(tradeOfferID, 10))
 	querystring.Add("language", "en")
