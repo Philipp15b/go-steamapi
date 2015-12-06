@@ -183,7 +183,8 @@ func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, tradeOfferID uint
 	err = json.NewDecoder(resp.Body).Decode(&toResp)
 
 	if err != nil {
-		return nil, fmt.Errorf("tradeoffer IEconGetTradeOffer Decode: error %v", err)
+		body, _ := ioutil.ReadAll(resp.Body)
+		return nil, fmt.Errorf("tradeoffer IEconGetTradeOffer Decode(%s): error %v", body, err)
 	}
 
 	// If the state is 0, it means there is a mistake
