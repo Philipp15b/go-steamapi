@@ -14,28 +14,42 @@ type State uint
 
 const (
 	// ETradeOfferStateCreated /!\ non steam status, used to know the TO has been created
-	ETradeOfferStateCreated State = iota
+	ETradeOfferStateCreated State = 0
 	// ETradeOfferStateInvalid Invalid
-	ETradeOfferStateInvalid
+	ETradeOfferStateInvalid State = 1
 	// ETradeOfferStateActive This trade offer has been sent, neither party has acted on it yet.
-	ETradeOfferStateActive
+	ETradeOfferStateActive State = 2
 	// ETradeOfferStateAccepted The trade offer was accepted by the recipient and items were exchanged.
-	ETradeOfferStateAccepted
+	ETradeOfferStateAccepted State = 3
 	// ETradeOfferStateCountered The recipient made a counter offer
-	ETradeOfferStateCountered
+	ETradeOfferStateCountered State = 4
 	// ETradeOfferStateExpired The trade offer was not accepted before the expiration date
-	ETradeOfferStateExpired
+	ETradeOfferStateExpired State = 5
 	// ETradeOfferStateCanceled The sender cancelled the offer
-	ETradeOfferStateCanceled
+	ETradeOfferStateCanceled State = 6
 	// ETradeOfferStateDeclined The recipient declined the offer
-	ETradeOfferStateDeclined
+	ETradeOfferStateDeclined State = 7
 	// ETradeOfferStateInvalidItems Some of the items in the offer are no longer available
 	// (indicated by the missing flag in the output)
-	ETradeOfferStateInvalidItems
-	// ETradeOfferStateEmailPending The offer hasn't been sent yet and is awaiting email confirmation
-	ETradeOfferStateEmailPending
-	// ETradeOfferStateEmailCanceled The receiver cancelled the offer via email
-	ETradeOfferStateEmailCanceled
+	ETradeOfferStateInvalidItems State = 8
+	// ETradeOfferStateCreatedNeedsConfirmation The offer hasn't been sent yet and is awaiting email/mobile confirmation. The offer is only visible to the sender.
+	ETradeOfferStateCreatedNeedsConfirmation State = 9
+	// ETradeOfferStateCanceledBySecondFactor Either party canceled the offer via email/mobile. The offer is visible to both parties, even if the sender canceled it before it was sent.
+	ETradeOfferStateCanceledBySecondFactor State = 10
+	// ETradeOfferStateInEscrow The trade has been placed on hold. The items involved in the trade have all been removed from both parties' inventories and will be automatically delivered in the future.
+	ETradeOfferStateInEscrow State = 11
+)
+
+// ConfirmationMethod different methods in which a trade offer can be confirmed.
+type ConfirmationMethod int
+
+const (
+	// ETradeOfferConfirmationMethodInvalid Invalid
+	ETradeOfferConfirmationMethodInvalid ConfirmationMethod = 0
+	// ETradeOfferConfirmationMethodEmail An email was sent with details on how to confirm the trade offer
+	ETradeOfferConfirmationMethodEmail ConfirmationMethod = 1
+	// ETradeOfferConfirmationMethodMobileApp The trade offer may be confirmed via the mobile app
+	ETradeOfferConfirmationMethodMobileApp ConfirmationMethod = 2
 )
 
 // CEconAsset represents an asset in steam web api
@@ -53,17 +67,20 @@ type CEconAsset struct {
 
 // CEconTradeOffer represent the to from the steam API
 type CEconTradeOffer struct {
-	TradeOfferID   uint64 `json:",string"`
-	OtherAccountID uint64 `json:"accountid_other"`
-	Message        string
-	ExpirationTime uint32        `json:"expiration_time"`
-	State          State         `json:"trade_offer_state"`
-	ToGive         []*CEconAsset `json:"items_to_give"`
-	ToReceive      []*CEconAsset `json:"items_to_receive"`
-	IsOurs         bool          `json:"is_our_offer"`
-	TimeCreated    uint32        `json:"time_created"`
-	TimeUpdated    uint32        `json:"time_updated"`
-	TradeID        uint64        `json:"tradeid,string"`
+	TradeOfferID       uint64 `json:",string"`
+	OtherAccountID     uint64 `json:"accountid_other"`
+	Message            string
+	ExpirationTime     uint32             `json:"expiration_time"`
+	State              State              `json:"trade_offer_state"`
+	ToGive             []*CEconAsset      `json:"items_to_give"`
+	ToReceive          []*CEconAsset      `json:"items_to_receive"`
+	IsOurs             bool               `json:"is_our_offer"`
+	TimeCreated        uint32             `json:"time_created"`
+	TimeUpdated        uint32             `json:"time_updated"`
+	FromRealTimeTrade  bool               `json:"from_real_time_trade"`
+	EscrowEndDate      uint32             `json:"escrow_end_date"`
+	ConfirmationMethod ConfirmationMethod `json:"confirmation_method"`
+	TradeID            uint64             `json:"tradeid,string"`
 }
 
 // CEconTradeOffers represent the list of different tradeoffers types

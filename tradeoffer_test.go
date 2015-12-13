@@ -31,19 +31,22 @@ func TestIEconGetTradeOffer(t *testing.T) {
 	}
 
 	expectedCETO := CEconTradeOffer{
-		TradeOfferID:   123456,
-		OtherAccountID: 1234,
-		Message:        "",
-		ExpirationTime: 1300000000,
-		State:          2,
-		ToGive:         []*CEconAsset{},
-		ToReceive:      []*CEconAsset{&expectedItem},
-		IsOurs:         true,
-		TimeCreated:    1300000000,
-		TimeUpdated:    1300000000,
+		TradeOfferID:       123456,
+		OtherAccountID:     1234,
+		Message:            "",
+		ExpirationTime:     1300000000,
+		State:              2,
+		ToGive:             []*CEconAsset{},
+		ToReceive:          []*CEconAsset{&expectedItem},
+		IsOurs:             true,
+		TimeCreated:        1300000000,
+		TimeUpdated:        1300000000,
+		FromRealTimeTrade:  false,
+		EscrowEndDate:      1450075573,
+		ConfirmationMethod: ETradeOfferConfirmationMethodInvalid,
 	}
 
-	TOgot, err := IEconGetTradeOffer(ts.URL, "123", 1, 1)
+	TOgot, err := IEconGetTradeOffer(ts.URL, "123", 1)
 
 	if err != nil {
 		t.Errorf("IEconGetTradeOffer unexpected err %v", err)
@@ -59,6 +62,9 @@ func TestIEconGetTradeOffer(t *testing.T) {
 		TOgot.TimeCreated != expectedCETO.TimeCreated ||
 		TOgot.TimeUpdated != expectedCETO.TimeUpdated ||
 		len(TOgot.ToGive) != len(expectedCETO.ToGive) ||
+		TOgot.FromRealTimeTrade != expectedCETO.FromRealTimeTrade ||
+		TOgot.ConfirmationMethod != expectedCETO.ConfirmationMethod ||
+		TOgot.EscrowEndDate != expectedCETO.EscrowEndDate ||
 		len(TOgot.ToReceive) != len(expectedCETO.ToReceive) {
 		t.Errorf("IEconGetTradeOffer expected %v, got %v", expectedCETO, TOgot)
 	}
@@ -93,43 +99,52 @@ func TestIEconGetTradeOffers(t *testing.T) {
 
 	expectedCETOsSent := []*CEconTradeOffer{
 		&CEconTradeOffer{
-			TradeOfferID:   123456,
-			OtherAccountID: 1234,
-			Message:        "",
-			ExpirationTime: 1300000000,
-			State:          2,
-			ToGive:         []*CEconAsset{},
-			ToReceive:      []*CEconAsset{&expectedItem},
-			IsOurs:         true,
-			TimeCreated:    1300000000,
-			TimeUpdated:    1300000000,
+			TradeOfferID:       123456,
+			OtherAccountID:     1234,
+			Message:            "",
+			ExpirationTime:     1300000000,
+			State:              2,
+			ToGive:             []*CEconAsset{},
+			ToReceive:          []*CEconAsset{&expectedItem},
+			IsOurs:             true,
+			TimeCreated:        1300000000,
+			TimeUpdated:        1300000000,
+			FromRealTimeTrade:  false,
+			EscrowEndDate:      1450075573,
+			ConfirmationMethod: ETradeOfferConfirmationMethodInvalid,
 		},
 		&CEconTradeOffer{
-			TradeOfferID:   123457,
-			OtherAccountID: 1234,
-			Message:        "",
-			ExpirationTime: 1300000000,
-			State:          2,
-			ToGive:         []*CEconAsset{},
-			ToReceive:      []*CEconAsset{&expectedItem},
-			IsOurs:         true,
-			TimeCreated:    1300000000,
-			TimeUpdated:    1300000000,
+			TradeOfferID:       123457,
+			OtherAccountID:     1234,
+			Message:            "",
+			ExpirationTime:     1300000000,
+			State:              2,
+			ToGive:             []*CEconAsset{},
+			ToReceive:          []*CEconAsset{&expectedItem},
+			IsOurs:             true,
+			TimeCreated:        1300000000,
+			TimeUpdated:        1300000000,
+			FromRealTimeTrade:  false,
+			EscrowEndDate:      1450075573,
+			ConfirmationMethod: ETradeOfferConfirmationMethodInvalid,
 		},
 	}
 
 	expectedCETOsReceived := []*CEconTradeOffer{
 		&CEconTradeOffer{
-			TradeOfferID:   123458,
-			OtherAccountID: 12345,
-			Message:        "",
-			ExpirationTime: 1300000000,
-			State:          2,
-			ToGive:         []*CEconAsset{},
-			ToReceive:      []*CEconAsset{&expectedItem},
-			IsOurs:         true,
-			TimeCreated:    1300000000,
-			TimeUpdated:    1300000000,
+			TradeOfferID:       123458,
+			OtherAccountID:     12345,
+			Message:            "",
+			ExpirationTime:     1300000000,
+			State:              2,
+			ToGive:             []*CEconAsset{},
+			ToReceive:          []*CEconAsset{&expectedItem},
+			IsOurs:             true,
+			TimeCreated:        1300000000,
+			TimeUpdated:        1300000000,
+			FromRealTimeTrade:  false,
+			EscrowEndDate:      1450075573,
+			ConfirmationMethod: ETradeOfferConfirmationMethodInvalid,
 		},
 	}
 

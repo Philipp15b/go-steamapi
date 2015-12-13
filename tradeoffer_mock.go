@@ -25,7 +25,9 @@ func GetMockActiveStateIEconGetTradeOffer() string {
           "is_our_offer": true,
           "time_created": 1300000000,
           "time_updated": 1300000000,
-          "from_real_time_trade": false
+          "from_real_time_trade": false,
+          "escrow_end_date": 1450075573,
+          "confirmation_method": 0
         },
         "descriptions": [
           {
@@ -115,7 +117,9 @@ func GetMockIEconGetTradeOffers() string {
             "is_our_offer": true,
             "time_created": 1300000000,
             "time_updated": 1300000000,
-            "from_real_time_trade": false
+            "from_real_time_trade": false,
+            "escrow_end_date": 1450075573,
+            "confirmation_method": 0
           },
           {
             "tradeofferid": "123457",
@@ -137,7 +141,9 @@ func GetMockIEconGetTradeOffers() string {
             "is_our_offer": true,
             "time_created": 1300000000,
             "time_updated": 1300000000,
-            "from_real_time_trade": false
+            "from_real_time_trade": false,
+            "escrow_end_date": 1450075573,
+            "confirmation_method": 0
           }
         ],
         "trade_offers_received": [
@@ -161,7 +167,9 @@ func GetMockIEconGetTradeOffers() string {
             "is_our_offer": true,
             "time_created": 1300000000,
             "time_updated": 1300000000,
-            "from_real_time_trade": false
+            "from_real_time_trade": false,
+            "escrow_end_date": 1450075573,
+            "confirmation_method": 0
           }
         ],
         "descriptions": [
