@@ -233,3 +233,9 @@ func GetMockIEconGetTradeOffers() string {
       }
     }`
 }
+
+func GetMockIEconCancelTradeOffer() string {
+	return `{
+      "response": {}
+    }`
+}

@@ -169,3 +169,34 @@ func TestIEconGetTradeOffers(t *testing.T) {
 			expectedCETOsReceived[0].OtherAccountID, TOsGot.Received[0].OtherAccountID)
 	}
 }
+
+func TestIEconCancelTradeOffer(t *testing.T) {
+	ts := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			fmt.Fprintf(w, GetMockIEconCancelTradeOffer())
+		}),
+	)
+
+	defer ts.Close()
+	err := IEconCancelTradeOffer(ts.URL, "123", 1)
+	if err != nil {
+		t.Errorf("IEconCancelTradeOffer returns an error %s, whereas it shouldn't", err)
+	}
+}
+
+func TestWrongAPIKeyIEconCancelTradeOffer(t *testing.T) {
+	ts := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusForbidden)
+		}),
+	)
+
+	defer ts.Close()
+	err := IEconCancelTradeOffer(ts.URL, "123", 1)
+	if err == nil {
+		t.Errorf("IEconCancelTradeOffer returns no error, whereas it should")
+	}
+}

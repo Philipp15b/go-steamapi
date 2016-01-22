@@ -264,6 +264,30 @@ func IEconActionTradeOffer(baseSteamAPIURL string, action string, apiKey string,
 
 }
 
+// IEconCancelTradeOffer declines a TO created by someone else
+func IEconCancelTradeOffer(baseSteamAPIURL string, apiKey string, tradeOfferID uint64) error {
+
+	resp, err := http.PostForm(
+		baseSteamAPIURL+"/IEconService/CancelTradeOffer/v1",
+		url.Values{"key": {apiKey}, "tradeofferid": {strconv.FormatUint(tradeOfferID, 10)}},
+	)
+	if err != nil {
+		return fmt.Errorf("tradeoffer IEconGetTradeOffer http.Get: error %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, errBody := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("tradeoffer IEconCancelTradeOffer: steam responded with a status %d with the message: %s (%v)",
+			resp.StatusCode,
+			body,
+			errBody,
+		)
+	}
+
+	return nil
+}
+
 func boolToStr(b bool) string {
 	if b {
 		return "1"
