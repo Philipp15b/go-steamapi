@@ -19,8 +19,8 @@ type PlayerBan struct {
 }
 
 // GetPlayerBans takes a list of steamIDs and returns PlayerBan slice
-func GetPlayerBans(baseSteamAPIURL string, steamIDs []uint64, apiKey string) ([]PlayerBan, error) {
-	var getPlayerBans = NewSteamMethod(baseSteamAPIURL, "ISteamUser", "GetPlayerBans", 1)
+func GetPlayerBans(steamIDs []uint64, apiKey string) ([]PlayerBan, error) {
+	var getPlayerBans = NewSteamMethod("ISteamUser", "GetPlayerBans", 1)
 	strSteamIDs := make([]string, len(steamIDs))
 	for _, id := range steamIDs {
 		strSteamIDs = append(strSteamIDs, strconv.FormatUint(id, 10))

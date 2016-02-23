@@ -97,7 +97,6 @@ type ieconGetTradeOffersResponse struct {
 
 // IEconGetTradeOffers retrieves a list of tradeoffers
 func IEconGetTradeOffers(
-	baseSteamAPIURL string,
 	apiKey string,
 	getSentOffers bool,
 	getReceivedOffers bool,
@@ -117,7 +116,7 @@ func IEconGetTradeOffers(
 	querystring.Add("historical_only", boolToStr(historicalOnly))
 	querystring.Add("time_historical_cutoff", strconv.FormatInt(timeHistoricalCutoff, 10))
 
-	resp, err := http.Get(baseSteamAPIURL + "/IEconService/GetTradeOffers/v0001?" + querystring.Encode())
+	resp, err := http.Get(BaseSteamAPIURL + "/IEconService/GetTradeOffers/v0001?" + querystring.Encode())
 
 	if err != nil {
 		return nil, fmt.Errorf("tradeoffer IEconGetTradeOffers http.Get: error %v", err)
@@ -170,7 +169,7 @@ func findMarketHashName(itemD []ItemDescription, appID uint, classID, instanceID
 }
 
 // IEconGetTradeOffer retrieves details about a specific tradeoffer
-func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, tradeOfferID uint64) (
+func IEconGetTradeOffer(apiKey string, tradeOfferID uint64) (
 	*CEconTradeOffer, error,
 ) {
 
@@ -180,7 +179,7 @@ func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, tradeOfferID uint
 	querystring.Add("tradeofferid", strconv.FormatUint(tradeOfferID, 10))
 	querystring.Add("language", "en")
 
-	resp, err := http.Get(baseSteamAPIURL + "/IEconService/GetTradeOffer/v1?" + querystring.Encode())
+	resp, err := http.Get(BaseSteamAPIURL + "/IEconService/GetTradeOffer/v1?" + querystring.Encode())
 	if err != nil {
 		return nil, fmt.Errorf("tradeoffer IEconGetTradeOffer http.Get: error %v", err)
 	}
@@ -229,7 +228,7 @@ func IEconGetTradeOffer(baseSteamAPIURL string, apiKey string, tradeOfferID uint
 }
 
 // IEconActionTradeOffer declines a TO created by someone else
-func IEconActionTradeOffer(baseSteamAPIURL string, action string, apiKey string, tradeOfferID uint64) error {
+func IEconActionTradeOffer(action string, apiKey string, tradeOfferID uint64) error {
 
 	if action != "Decline" && action != "Cancel" {
 		return fmt.Errorf("tradeoffer IEconActionTradeOffer doesn't support %v action", action)
@@ -239,7 +238,7 @@ func IEconActionTradeOffer(baseSteamAPIURL string, action string, apiKey string,
 	querystring.Add("tradeofferid", strconv.FormatUint(tradeOfferID, 10))
 
 	resp, err := http.Get(
-		baseSteamAPIURL + "/IEconService/" + action + "TradeOffer/v0001?" + querystring.Encode())
+		BaseSteamAPIURL + "/IEconService/" + action + "TradeOffer/v0001?" + querystring.Encode())
 
 	if err != nil {
 		return fmt.Errorf("tradeoffer IEconGetTradeOffer http.Get: error %v", err)
@@ -265,10 +264,10 @@ func IEconActionTradeOffer(baseSteamAPIURL string, action string, apiKey string,
 }
 
 // IEconCancelTradeOffer declines a TO created by someone else
-func IEconCancelTradeOffer(baseSteamAPIURL string, apiKey string, tradeOfferID uint64) error {
+func IEconCancelTradeOffer(apiKey string, tradeOfferID uint64) error {
 
 	resp, err := http.PostForm(
-		baseSteamAPIURL+"/IEconService/CancelTradeOffer/v1",
+		BaseSteamAPIURL+"/IEconService/CancelTradeOffer/v1",
 		url.Values{"key": {apiKey}, "tradeofferid": {strconv.FormatUint(tradeOfferID, 10)}},
 	)
 	if err != nil {

@@ -70,8 +70,8 @@ type playerSummaryJSON struct {
 }
 
 // GetPlayerSummaries Fetches the player summaries for the given Steam Ids.
-func GetPlayerSummaries(baseSteamAPIURL string, ids []uint64, apiKey string) ([]PlayerSummary, error) {
-	var getPlayerSummaries = NewSteamMethod(baseSteamAPIURL, "ISteamUser", "GetPlayerSummaries", 2)
+func GetPlayerSummaries(ids []uint64, apiKey string) ([]PlayerSummary, error) {
+	var getPlayerSummaries = NewSteamMethod("ISteamUser", "GetPlayerSummaries", 2)
 	strIds := make([]string, len(ids))
 	for _, id := range ids {
 		strIds = append(strIds, strconv.FormatUint(id, 10))
@@ -96,8 +96,8 @@ type ResolveVanityURLResponse struct {
 }
 
 // ResolveVanityURL should return a response
-func ResolveVanityURL(baseSteamAPIURL string, vanityURL string, apiKey string) (*ResolveVanityURLResponse, error) {
-	var resolveVanityURL = NewSteamMethod(baseSteamAPIURL, "ISteamUser", "ResolveVanityURL", 1)
+func ResolveVanityURL(vanityURL string, apiKey string) (*ResolveVanityURLResponse, error) {
+	var resolveVanityURL = NewSteamMethod("ISteamUser", "ResolveVanityURL", 1)
 	data := url.Values{}
 	data.Add("key", apiKey)
 	data.Add("vanityURL", vanityURL)

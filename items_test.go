@@ -16,7 +16,7 @@ func TestMockOkGetPlayerItems(t *testing.T) {
 		fmt.Fprintf(w, GetMockOKGetPlayerItems())
 	}))
 	defer ts.Close()
-
+	BaseSteamAPIURL = ts.URL
 	appID := uint64(2)
 	steamID := uint64(1234)
 	apiKey := "123"
@@ -71,7 +71,7 @@ func TestMockOkGetPlayerItems(t *testing.T) {
 		},
 	}
 
-	playerItems, err := GetPlayerItems(ts.URL, steamID, appID, apiKey)
+	playerItems, err := GetPlayerItems(steamID, appID, apiKey)
 	if err != nil {
 		t.Errorf("GetPlayerItems failure: %v", err)
 		return

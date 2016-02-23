@@ -33,9 +33,9 @@ func (i *Asset) HasTag(tag string) bool {
 }
 
 // GetAssetPrices returns a list of assets with their prices
-func GetAssetPrices(baseSteamAPIURL string, appid uint64, language, currency, apiKey string) ([]Asset, error) {
+func GetAssetPrices(appid uint64, language, currency, apiKey string) ([]Asset, error) {
 
-	var getAssetPrices = NewSteamMethod(baseSteamAPIURL, "ISteamEconomy", "GetAssetPrices", 1)
+	var getAssetPrices = NewSteamMethod("ISteamEconomy", "GetAssetPrices", 1)
 
 	vals := url.Values{}
 	vals.Add("key", apiKey)

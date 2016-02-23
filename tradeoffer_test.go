@@ -15,6 +15,7 @@ func TestIEconGetTradeOffer(t *testing.T) {
 			fmt.Fprintf(w, GetMockActiveStateIEconGetTradeOffer())
 		}),
 	)
+	BaseSteamAPIURL = ts.URL
 
 	defer ts.Close()
 
@@ -46,7 +47,7 @@ func TestIEconGetTradeOffer(t *testing.T) {
 		ConfirmationMethod: ETradeOfferConfirmationMethodInvalid,
 	}
 
-	TOgot, err := IEconGetTradeOffer(ts.URL, "123", 1)
+	TOgot, err := IEconGetTradeOffer("123", 1)
 
 	if err != nil {
 		t.Errorf("IEconGetTradeOffer unexpected err %v", err)
@@ -82,7 +83,7 @@ func TestIEconGetTradeOffers(t *testing.T) {
 			fmt.Fprintf(w, GetMockIEconGetTradeOffers())
 		}),
 	)
-
+	BaseSteamAPIURL = ts.URL
 	defer ts.Close()
 
 	expectedItem := CEconAsset{
@@ -148,7 +149,7 @@ func TestIEconGetTradeOffers(t *testing.T) {
 		},
 	}
 
-	TOsGot, err := IEconGetTradeOffers(ts.URL, "123", true, true, true, false, false, 1)
+	TOsGot, err := IEconGetTradeOffers("123", true, true, true, false, false, 1)
 
 	if err != nil {
 		t.Errorf("IEconGetTradeOffers unexpected err %v", err)
@@ -180,7 +181,9 @@ func TestIEconCancelTradeOffer(t *testing.T) {
 	)
 
 	defer ts.Close()
-	err := IEconCancelTradeOffer(ts.URL, "123", 1)
+	BaseSteamAPIURL = ts.URL
+
+	err := IEconCancelTradeOffer("123", 1)
 	if err != nil {
 		t.Errorf("IEconCancelTradeOffer returns an error %s, whereas it shouldn't", err)
 	}
@@ -193,9 +196,9 @@ func TestWrongAPIKeyIEconCancelTradeOffer(t *testing.T) {
 			w.WriteHeader(http.StatusForbidden)
 		}),
 	)
-
+	BaseSteamAPIURL = ts.URL
 	defer ts.Close()
-	err := IEconCancelTradeOffer(ts.URL, "123", 1)
+	err := IEconCancelTradeOffer("123", 1)
 	if err == nil {
 		t.Errorf("IEconCancelTradeOffer returns no error, whereas it should")
 	}

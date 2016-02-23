@@ -29,7 +29,8 @@ func TestMockOkGetAssetClassInfo(t *testing.T) {
 	language := "en"
 	apiKey := "123"
 
-	infos, err := GetAssetClassInfo(ts.URL, appID, classID, language, apiKey)
+	BaseSteamAPIURL = ts.URL
+	infos, err := GetAssetClassInfo(appID, classID, language, apiKey)
 
 	if err != nil {
 		t.Errorf("GetAssetClassInfo failure: %v", err)
