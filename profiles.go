@@ -13,9 +13,9 @@ const (
 	// Private community visibility state
 	Private CommunityVisibilityState = 1
 	// FriendsOnly community visibility state
-	FriendsOnly = 2
+	FriendsOnly CommunityVisibilityState = 2
 	// Public community visibility state
-	Public = 3
+	Public CommunityVisibilityState = 3
 )
 
 // PersonaState is the visibility state
