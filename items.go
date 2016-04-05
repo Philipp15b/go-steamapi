@@ -1,30 +1,33 @@
 package steamapi
 
 import (
+	"fmt"
 	"net/url"
 	"strconv"
 )
 
-type playerItemsJson struct {
+type playerItemsJSON struct {
 	Result Inventory
 }
 
+// Inventory is the inventory of the user as represented in steam
 type Inventory struct {
 	Status        uint
 	BackpackSlots int `json:"num_backpack_slots"`
 	Items         []Item
 }
 
+// Item in an inventory
 type Item struct {
-	Id                uint32
-	OriginalId        uint32 `json:"original_id"`
-	Defindex          int
+	ID                uint64
+	OriginalID        uint64 `json:"original_id"`
+	Defindex          uint32
 	Level             int
-	Quanitity         int
+	Quantity          int
 	Origin            int
 	Untradeable       bool   `json:"flag_cannot_trade,omitempty"`
 	Uncraftable       bool   `json:"flag_cannot_craft,omitempty"`
-	InventoryToken    uint32 `json:",inventory"`
+	InventoryToken    uint32 `json:"inventory"`
 	Quality           int
 	CustomName        string      `json:"custom_name,omitempty"`
 	CustomDescription string      `json:"custom_description,omitempty"`
@@ -32,39 +35,47 @@ type Item struct {
 	Equipped          []EquipInfo `json:",omitempty"`
 }
 
+// Position gets the position of the item in an inventory
 func (i *Item) Position() uint16 {
 	return uint16(i.InventoryToken & 0xFFFF)
 }
 
+// Attribute is the attribute of an item
 type Attribute struct {
-	Defindex    int
+	Defindex    uint32
 	Value       int
-	FloatValue  float64      `json:",omitempty"`
+	FloatValue  float64      `json:"float_value,omitempty"`
 	AccountInfo *AccountInfo `json:",omitempty"`
 }
 
+// AccountInfo is id and name of user
 type AccountInfo struct {
-	SteamId     uint64 `json:",string"`
+	SteamID     uint64 `json:",string"`
 	PersonaName string
 }
 
+// EquipInfo class and slot of equipment
 type EquipInfo struct {
 	Class int
 	Slot  int
 }
 
-// Fetches the player summaries for the given Steam Id.
-func GetPlayerItems(id uint64, app int, apiKey string) (*Inventory, error) {
-	getPlayerItems := NewSteamMethod("IEconItems_"+strconv.Itoa(app), "GetPlayerItems", 1)
+// GetPlayerItems Fetches the player summaries for the given Steam Id.
+func GetPlayerItems(steamID uint64, appID uint64, apiKey string) (*Inventory, error) {
+
+	getPlayerItems := NewSteamMethod("IEconItems_"+strconv.FormatUint(appID, 10), "GetPlayerItems", 1)
 
 	vals := url.Values{}
 	vals.Add("key", apiKey)
-	vals.Add("SteamId", strconv.FormatUint(id, 10))
+	vals.Add("steamid", strconv.FormatUint(steamID, 10))
 
-	var resp playerItemsJson
+	var resp playerItemsJSON
+
 	err := getPlayerItems.Request(vals, &resp)
+
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("steamapi GetPlayerItems: %v", err)
 	}
+
 	return &resp.Result, nil
 }
