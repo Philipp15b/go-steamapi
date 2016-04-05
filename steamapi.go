@@ -45,6 +45,6 @@ func (s SteamMethod) Request(data url.Values, v interface{}) error {
 	}
 
 	d := json.NewDecoder(resp.Body)
-	_ = d.Decode(&v)
-	return nil
+
+	return d.Decode(&v)
 }
