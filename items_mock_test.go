@@ -22,7 +22,7 @@ func GetMockOKGetPlayerItems() string {
 								"class": 23,
 								"slot": 6
 							}
-						]				
+						]
 					},
 					{
 						"id": 1234567897,
@@ -37,11 +37,15 @@ func GetMockOKGetPlayerItems() string {
 				              "defindex": 8,
 				              "value": 1049511890,
 				              "float_value": 0.27789169549942017
-				            }
+				            },
+							{
+								"defindex": 147,
+								"value": "models/weapons/stattrack.mdl"
+							}
 			            ]
 					}
 				]
-				
+
 			}
 		}
 	`

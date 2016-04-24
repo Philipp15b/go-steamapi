@@ -43,7 +43,7 @@ func (i *Item) Position() uint16 {
 // Attribute is the attribute of an item
 type Attribute struct {
 	Defindex    uint32
-	Value       int
+	Value       interface{}  `json:"value"`
 	FloatValue  float64      `json:"float_value,omitempty"`
 	AccountInfo *AccountInfo `json:",omitempty"`
 }

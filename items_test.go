@@ -66,6 +66,11 @@ func TestMockOkGetPlayerItems(t *testing.T) {
 						FloatValue:  0.27789169549942017,
 						AccountInfo: (*AccountInfo)(nil),
 					},
+					Attribute{
+						Defindex:    9,
+						FloatValue:  0.2,
+						AccountInfo: (*AccountInfo)(nil),
+					},
 				},
 			},
 		},
