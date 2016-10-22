@@ -12,10 +12,13 @@ type playerBansJSON struct {
 
 // PlayerBan contains all ban status for community, VAC and economy
 type PlayerBan struct {
-	SteamID         uint64 `json:"SteamId,string"`
-	CommunityBanned bool
-	VACBanned       bool
-	EconomyBan      string
+	SteamID          uint64 `json:"SteamId,string"`
+	CommunityBanned  bool
+	VACBanned        bool
+	EconomyBan       string
+	NumberOfVACBans  uint
+	DaysSinceLastBan uint
+	NumberOfGameBans uint
 }
 
 // GetPlayerBans takes a list of steamIDs and returns PlayerBan slice
