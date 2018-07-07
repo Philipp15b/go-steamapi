@@ -5,14 +5,14 @@ import (
 	"strconv"
 )
 
-type schemaJson struct {
+type schemaJSON struct {
 	Result Schema
 }
 
-// A game schema.
+// Schema is a game schema
 type Schema struct {
 	Status                               int
-	FullSchemaUrl                        string `json:"items_game_url"`
+	FullSchemaURL                        string `json:"items_game_url"`
 	Qualities                            map[string]int
 	QualityNames                         map[string]string
 	OriginNames                          []Origin
@@ -24,7 +24,7 @@ type Schema struct {
 	KillEaterScoreTypes                  []KillEaterScoreType `json:"kill_eater_score_types"`
 }
 
-// Finds an item by its defindex in a Schema.
+// Item finds an item by its defindex in a Schema.
 func (s *Schema) Item(defindex int) *SchemaItem {
 	for _, item := range s.Items {
 		if item.Defindex == defindex {
@@ -34,7 +34,7 @@ func (s *Schema) Item(defindex int) *SchemaItem {
 	return nil
 }
 
-// A Schema description of an Item.
+// SchemaItem is a schema description of an Item.
 type SchemaItem struct {
 	Name               string
 	Defindex           int
@@ -46,8 +46,8 @@ type SchemaItem struct {
 	Slot               string                `json:"item_slot"`
 	DefaultQuality     int                   `json:"item_quality"`
 	InventoryImage     *string               `json:"image_inventory"` // this is null for the "Free Trial Premium Upgrade"
-	ImageUrl           string                `json:"image_url"`
-	ImageUrlLarge      string                `json:"image_url_large"`
+	ImageURL           string                `json:"image_url"`
+	ImageURLLarge      string                `json:"image_url_large"`
 	DropType           string                `json:"drop_type,omitempty"`
 	ItemSet            string                `json:"item_set,omitempty"`
 	HolidayRestriction string                `json:"holiday_restriction"`
@@ -61,23 +61,25 @@ type SchemaItem struct {
 	Attributes         []SchemaItemAttribute `json:",omitempty"`
 }
 
-// An item origin as defined in the Schema.
+// Origin is an item origin as defined in the Schema.
 type Origin struct {
-	Id   int `json:"origin"`
+	ID   int `json:"origin"`
 	Name string
 }
 
-// An item style
+// Style is an item style
 type Style struct {
 	Name string
 }
 
+// SchemaItemAttribute is the schema items attributes
 type SchemaItemAttribute struct {
 	Name  string
 	Class string
 	Value float64
 }
 
+// SchemaAttribute is a schema attribute
 type SchemaAttribute struct {
 	Name              string
 	Defindex          int
@@ -91,6 +93,7 @@ type SchemaAttribute struct {
 	StoredAsInteger   bool `json:"stored_as_integer"`
 }
 
+// ItemSet is an item set
 type ItemSet struct {
 	InternalName string `json:"item_set"`
 	Name         string
@@ -99,39 +102,43 @@ type ItemSet struct {
 	Attributes   []SchemaItemAttribute `json:",omitempty"`
 }
 
+// ParticleEffect is the particle effect
 type ParticleEffect struct {
 	System           string
-	Id               int
+	ID               int
 	AttachToRootbone bool   `json:"attach_to_rootbone"`
 	Attachment       string `json:",omitempty"`
 	Name             string
 }
 
+// ItemRankSet is the set of the possible ranks
 type ItemRankSet struct {
 	Name   string
 	Levels []ItemRank
 }
 
+// ItemRank is the rank of the item
 type ItemRank struct {
 	Level         int
 	RequiredScore int `json:"required_score"`
 	Name          string
 }
 
+// KillEaterScoreType is the type of kill eater score
 type KillEaterScoreType struct {
-	Id   int    `json:"type"`
+	ID   int    `json:"type"`
 	Name string `json:"type_name"`
 }
 
-// Fetches the Schema for the given game.
-func GetSchema(app int, language, apiKey string) (*Schema, error) {
-	getSchema := NewSteamMethod("IEconItems_"+strconv.Itoa(app), "GetSchema", 1)
+// GetSchema Fetches the Schema for the given game.
+func GetSchema(appID int, language, APIKey string) (*Schema, error) {
+	getSchema := NewSteamMethod("IEconItems_"+strconv.Itoa(appID), "GetSchema", 1)
 
 	vals := url.Values{}
-	vals.Add("key", apiKey)
+	vals.Add("key", APIKey)
 	vals.Add("language", language)
 
-	var resp schemaJson
+	var resp schemaJSON
 	err := getSchema.Request(vals, &resp)
 	if err != nil {
 		return nil, err
