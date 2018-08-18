@@ -1,6 +1,7 @@
 package steamapi
 
 import (
+	"errors"
 	"net/url"
 	"strconv"
 	"strings"
@@ -107,5 +108,8 @@ func ResolveVanityURL(vanityURL string, apiKey string) (*ResolveVanityURLRespons
 	if err != nil {
 		return nil, err
 	}
-	return &resp, nil
+	if resp.Success != 1 {
+		err = errors.New(resp.Message)
+	}
+	return &resp, err
 }
