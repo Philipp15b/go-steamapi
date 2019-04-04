@@ -30,12 +30,12 @@ func NewIdFrom64bit(i uint64) (id steamId) {
 }
 
 func NewIdFromVanityUrl(vanityUrl, apiKey string) (id steamId, err error) {
-	resp, err := ResolveVanityUrl(vanityUrl, apiKey)
+	resp, err := ResolveVanityURL(vanityUrl, apiKey)
 	if err != nil {
 		return
 	}
 
-	id = NewIdFrom64bit(resp.SteamId)
+	id = NewIdFrom64bit(resp.SteamID)
 	return
 }
 
