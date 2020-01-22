@@ -62,6 +62,8 @@ type PlayerSummary struct {
 	GameExtraInfo string `json:",omitempty"`
 
 	PrimaryClanID uint64 `json:",string,omitempty"`
+	GameID uint64 `json:",string,omitempty"`
+	GameServerIp string `json:",omitempty"`
 }
 
 type playerSummaryJSON struct {
