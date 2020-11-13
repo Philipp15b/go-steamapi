@@ -105,13 +105,15 @@ func ResolveVanityURL(vanityURL string, apiKey string) (*ResolveVanityURLRespons
 	data.Add("key", apiKey)
 	data.Add("vanityURL", vanityURL)
 
-	var resp ResolveVanityURLResponse
+	var resp struct {
+		Response ResolveVanityURLResponse
+	}
 	err := resolveVanityURL.Request(data, &resp)
 	if err != nil {
 		return nil, err
 	}
-	if resp.Success != 1 {
-		err = errors.New(resp.Message)
+	if resp.Response.Success != 1 {
+		err = errors.New(resp.Response.Message)
 	}
-	return &resp, err
+	return &resp.Response, err
 }
