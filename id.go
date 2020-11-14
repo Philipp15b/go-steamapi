@@ -44,6 +44,7 @@ func NewIdFromString(s string) (id steamId, err error) {
 
 	if !validid.MatchString(s) {
 		err = ErrInvalidId
+		return
 	}
 
 	tmp := strings.Split(s, ":")
